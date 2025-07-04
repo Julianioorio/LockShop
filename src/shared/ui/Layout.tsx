@@ -6,7 +6,7 @@ interface LayoutProps {
 }
 
 const Layout = ({ children, bgColor = 'bg-white'}: LayoutProps) => (
-  <div className={bgColor}>
+   <div className={bgColor} >
     <div className="container mx-auto">{children}</div>
   </div>
 );
