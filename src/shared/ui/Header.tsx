@@ -8,7 +8,7 @@ export function Header() {
     <Layout>
       <div className="flex justify-between py-5">
         <div className="flex justify-between items-center gap-[102px]">
-          <Logo></Logo>
+          <Logo className="max-lg:hidden"></Logo>
           <PagesList></PagesList>
         </div>
         <HeaderActions />
