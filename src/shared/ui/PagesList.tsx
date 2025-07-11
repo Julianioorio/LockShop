@@ -9,6 +9,8 @@ import Hotel from "@/shared/assets/img/HotelL.png";
 import Office from "@/shared/assets/img/OfficeL.png";
 import Loker from "@/shared/assets/img/LockerL.png";
 import Changing from "@/shared/assets/img/changingRL.png";
+import { HeaderActions } from "@/shared/ui/HeaderActions";
+import Layout from "@/shared/ui/Layout";
 
 export default function PagesList() {
   const lockItems = [
@@ -47,6 +49,7 @@ export default function PagesList() {
   ];
   const { value: isOpen, toggle } = useToggle(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const { value: isOpenBurger, toggle: setIsOpenBurger } = useToggle(false);
 
   return (
     <>
@@ -129,14 +132,14 @@ export default function PagesList() {
                 <img
                   src={lockItems[0].img}
                   alt={lockItems[0].label}
-                  className={"absolute top-0 left-0 w-full h-auto transition-opacity duration-300 " + (hoveredIndex === null ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none")}              
+                  className={"absolute top-0 left-0 w-full h-auto transition-opacity duration-300 " + (hoveredIndex === null ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none")}
                 />
                 {lockItems.map((item, idx) => (
                   <img
                     key={item.label}
                     src={item.img}
                     alt={item.label}
-                    className={"absolute top-0 left-0 w-full h-full transition-opacity duration-300 " + (hoveredIndex === idx ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none")}                   
+                    className={"absolute top-0 left-0 w-full h-full transition-opacity duration-300 " + (hoveredIndex === idx ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none")}
                   />
                 ))}
               </div>
@@ -154,11 +157,29 @@ export default function PagesList() {
           </li>
         </ul>
       </nav>
-      <div className="max-lg:w-[24px] max-lg:h-[24px] lg:hidden max-lg:flex max-lg:flex-col max-lg:justify-around ">
-        <span className="border-1 border-black max-lg:rounded-lg"></span>
-        <span className="border-1 border-black max-lg:rounded-lg"></span>
-        <span className="border-1 border-black max-lg:rounded-lg"></span>
+      <div className="max-lg:w-[24px] max-lg:h-[24px] lg:hidden max-lg:flex max-lg:flex-col max-lg:justify-around cursor-pointer" onClick={setIsOpenBurger}>
+        <span className={`block h-0.5 w-full bg-black rounded transition-all duration-300 ${isOpenBurger ? "rotate-45 translate-y-2" : ""}`}></span>
+        <span className={`block h-0.5 w-full bg-black rounded transition-all duration-300 ${isOpenBurger ? "opacity-0" : ""}`}></span>
+        <span className={`block h-0.5 w-full bg-black rounded transition-all duration-300 ${isOpenBurger ? "-rotate-45 -translate-y-2" : ""}`}></span>
       </div>
+      {isOpenBurger && (
+        <div className="fixed top-[116px] left-0 w-screen h-[calc(100vh-116px)] z-50 bg-white bg-opacity-95 flex flex-col">
+          <Layout>
+            <ul className="flex flex-col gap-6 w-full">
+              <li className="font-SFT border-b border-[#EAEAEA] text-black py-4"><a href="#">Главная</a></li>
+              <li className="font-SFT border-b border-[#EAEAEA] text-black py-4"><a href="#">Каталог</a></li>
+              <li className="font-SFT border-b border-[#EAEAEA] text-black py-4"><a href="#">Оптовая продажа</a></li>
+              <li className="font-SFT border-b border-[#EAEAEA] text-black py-4"><a href="#">О нас</a></li>
+            </ul>
+            <div className="mt-8 flex items-start justify-between w-full">
+              <HeaderActions type="phone" />
+              <a href="#" className="text-blue-400 font-SFD underline font-semibold">
+                Обратный звонок
+              </a>
+            </div>
+          </Layout>
+        </div>
+      )}
     </>
   );
 }
