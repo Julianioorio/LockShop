@@ -7,14 +7,17 @@ import { useMediaQuery } from "react-responsive";
 export function Header() {
   const isMobile = useMediaQuery({ maxWidth: 1024 });
   return (
-    <Layout>
-      <div className="flex justify-between py-5">
-        <div className="flex justify-between items-center gap-[102px]">
-          <Logo className="max-lg:hidden"></Logo>
-          <PagesList></PagesList>
+    <>
+      <Layout>
+        <div className="flex justify-between py-5">
+          <div className="flex justify-between items-center gap-[102px]">
+            <Logo className="max-lg:hidden"></Logo>
+            <PagesList></PagesList>
+          </div>
+          <HeaderActions {...(isMobile ? { type: "icons" } : {})} />
         </div>
-        <HeaderActions {...(isMobile ? { type: "icons" } : {})} />
-      </div>
-    </Layout>
+      </Layout>
+      <span className="block border-b-[rgb(196,205,213)] border w-screen h-0.5"></span>
+    </>
   );
 }

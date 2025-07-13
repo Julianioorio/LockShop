@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useToggle } from "@/shared/lib/hooks/useToggle";
-import overheadLock from "@/shared/assets/img/OverheadL.png";
+import overheadLock from "@/shared/assets/img/OverheadLGG.jpg";
 import Cout from "@/shared/assets/img/Cut-outL.png";
 import { Button } from "@/shared/ui/Button";
 import Apartment from "@/shared/assets/img/ApartmentL.png";
@@ -50,6 +50,15 @@ export default function PagesList() {
   const { value: isOpen, toggle } = useToggle(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const { value: isOpenBurger, toggle: setIsOpenBurger } = useToggle(false);
+  const [currentSlide, setCurrentSlide] = useState(0); // 0 - меню, 1 - каталог
+
+  const handleCatalogClick = () => {
+    setCurrentSlide(1);
+  };
+
+  const handleBackClick = () => {
+    setCurrentSlide(0);
+  };
 
   return (
     <>
@@ -163,22 +172,75 @@ export default function PagesList() {
         <span className={`block h-0.5 w-full bg-black rounded transition-all duration-300 ${isOpenBurger ? "-rotate-45 -translate-y-2" : ""}`}></span>
       </div>
       {isOpenBurger && (
-        <div className="fixed top-[116px] left-0 w-screen h-[calc(100vh-116px)] z-50 bg-white bg-opacity-95 flex flex-col">
-          <Layout>
-            <ul className="flex flex-col gap-6 w-full">
-              <li className="font-SFT border-b border-[#EAEAEA] text-black py-4"><a href="#">Главная</a></li>
-              <li className="font-SFT border-b border-[#EAEAEA] text-black py-4"><a href="#">Каталог</a></li>
-              <li className="font-SFT border-b border-[#EAEAEA] text-black py-4"><a href="#">Оптовая продажа</a></li>
-              <li className="font-SFT border-b border-[#EAEAEA] text-black py-4"><a href="#">О нас</a></li>
-            </ul>
-            <div className="mt-8 flex items-start justify-between w-full">
-              <HeaderActions type="phone" />
-              <a href="#" className="text-blue-400 font-SFD underline font-semibold">
-                Обратный звонок
-              </a>
+        <>
+          {/* Первый слайд - меню (остается на своем месте) */}
+          <div
+            className={`fixed top-[135px] left-0 w-screen h-[calc(100vh-116px)] z-50 bg-white bg-opacity-95 flex flex-col transition-transform duration-500 ease-in-out ${
+              currentSlide === 0 ? "translate-x-0" : "-translate-x-full"
+            }`}
+          >
+            <Layout>
+              <ul className="flex flex-col gap-6 w-full">
+                <li className="font-SFT border-b border-[#EAEAEA] text-black py-4">
+                  <a href="#">Главная</a>
+                </li>
+                <li className="font-SFT border-b border-[#EAEAEA] text-black py-4">
+                  <a href="#" className="flex justify-between" onClick={handleCatalogClick}>
+                    <p>Каталог</p>
+                    <span className="inline-block w-2 h-2 border-r-2 border-b-2 border-black rotate-[-45deg] cursor-pointer"></span>
+                  </a>
+                </li>
+                <li className="font-SFT border-b border-[#EAEAEA] text-black py-4">
+                  <a href="#">Оптовая продажа</a>
+                </li>
+                <li className="font-SFT border-b border-[#EAEAEA] text-black py-4">
+                  <a href="#">О нас</a>
+                </li>
+              </ul>
+              <div className="mt-8 flex items-start justify-between w-full">
+                <HeaderActions type="phone" />
+                <a href="#" className="text-blue-400 font-SFD underline font-semibold">
+                  Обратный звонок
+                </a>
+              </div>
+            </Layout>
+          </div>
+
+          {/* Второй слайд - каталог (начинается с верха, заканчивается на Discount) */}
+          <div className={`fixed top-[44px] left-0 w-screen h-screen z-50 bg-white transition-transform duration-500 ease-in-out ${currentSlide === 1 ? "translate-x-0" : "translate-x-full"}`}>
+            {/* Header для второго слайда - на месте бургера */}
+            <div className="bg-white border-b border-[#EAEAEA] px-4 py-3 flex items-center justify-between">
+              <button onClick={handleBackClick} className="w-6 h-6 flex items-center justify-center">
+                <span className="inline-block w-3 h-3 border-l-2 border-b-2 border-black rotate-[45deg]"></span>
+              </button>
+              <h2 className="font-SFT text-lg font-medium">Каталог</h2>
+              <div className="w-6"></div>
             </div>
-          </Layout>
-        </div>
+
+            {/* Контент каталога с прокруткой */}
+            <div className="h-[calc(100%-60px)] overflow-y-auto px-5">
+              <div className="flex flex-col gap-6">
+                {Array.from({ length: Math.ceil(lockItems.length / 2) }, (_, rowIndex) => (
+                  <div key={rowIndex} className="flex justify-center mt-6">
+                    {lockItems.slice(rowIndex * 2, rowIndex * 2 + 2).map((item, index) => (
+                      <div key={index} className="text-left min-w-[131px] max-w-[300px] mr-[20px]">
+                        <img src={item.img} alt={item.label} className="w-[100%] object-cover mb-3" />
+                        <h3 className="font-SFT text-black font-medium leading-tight">{item.label}</h3>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+
+              {/* Кнопка "Смотреть всё" внизу */}
+              <div className="mt-8 pb-6 flex justify-center">
+                <div className="w-fit">
+                  <Button className="w-full">Смотреть всё</Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
       )}
     </>
   );

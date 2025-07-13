@@ -1,8 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/**/*.{js,ts,jsx,tsx}", // Охватывает все файлы внутри src, включая app/
-    "./src/app/styles/index.css", // Добавь этот путь, если используешь utility-классы в index.css
+    "./src/**/*.{js,ts,jsx,tsx}",
+    "./src/app/styles/index.css", 
     "./index.html",
   ],
   theme: {
@@ -20,6 +20,7 @@ module.exports = {
       screens: {
         smO: "290px", // Кастомный БрэйкПоинт
         smT: "400px", // Кастомный БрэйкПоинт
+        sm: '640px',
         md: "768px",
         lg: "1024px",
         xl: "1280px",
