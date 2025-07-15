@@ -10,7 +10,7 @@ export function HeaderActions({ type }: HeaderActionsProps) {
       {(type === "phone" || !type) && (
         <>
           <img src={TelIcon} alt="Tel" className="mr-2" />
-          <a href="tel: +79665588499" className="font-SFD text-black">
+          <a href="tel: +79665588499" className="font-SFD text-black max-smT:text-[12px]">
             +7 (966) 55 88 499
           </a>
         </>

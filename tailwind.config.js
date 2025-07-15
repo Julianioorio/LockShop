@@ -1,10 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "./src/app/styles/index.css", 
-    "./index.html",
-  ],
+  content: ["./src/**/*.{js,ts,jsx,tsx}", "./src/app/styles/index.css", "./index.html"],
   theme: {
     extend: {
       fontFamily: {
@@ -13,6 +9,16 @@ module.exports = {
         HEL: ["HelveticaNeueCyr", "sans-serif"],
         ROB: ["Roboto", "sans-serif"],
       },
+      screens: {
+        smO: "290px", // Кастомный БрэйкПоинт
+        smT: "400px", // Кастомный БрэйкПоинт
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+        "2xl": "1536px",
+        "max-smT": { max: "399px" },
+      },
     },
     container: {
       center: true,
@@ -20,7 +26,7 @@ module.exports = {
       screens: {
         smO: "290px", // Кастомный БрэйкПоинт
         smT: "400px", // Кастомный БрэйкПоинт
-        sm: '640px',
+        sm: "640px",
         md: "768px",
         lg: "1024px",
         xl: "1280px",

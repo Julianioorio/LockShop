@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useToggle } from "@/shared/lib/hooks/useToggle";
-import overheadLock from "@/shared/assets/img/OverheadLGG.jpg";
+import overheadLock from "@/shared/assets/img/OverheadLG.png";
 import Cout from "@/shared/assets/img/Cut-outL.png";
 import { Button } from "@/shared/ui/Button";
 import Apartment from "@/shared/assets/img/ApartmentL.png";
@@ -49,8 +49,17 @@ export default function PagesList() {
   ];
   const { value: isOpen, toggle } = useToggle(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [lastHoveredIndex, setLastHoveredIndex] = useState<number | null>(null);
   const { value: isOpenBurger, toggle: setIsOpenBurger } = useToggle(false);
   const [currentSlide, setCurrentSlide] = useState(0); // 0 - меню, 1 - каталог
+
+  const activeIndex = hoveredIndex ?? lastHoveredIndex ?? 0;
+
+  const handleMouseEnter = (idx: number) => {
+    setHoveredIndex(idx);
+    setLastHoveredIndex(idx);
+  };
+  const handleMouseLeave = () => setHoveredIndex(null);
 
   const handleCatalogClick = () => {
     setCurrentSlide(1);
@@ -78,79 +87,25 @@ export default function PagesList() {
             <div className={`flex absolute p-8 bg-white shadow-md justify-between items-center  w-[790px] ${`${isOpen ? "block" : "hidden"}`}`}>
               <div>
                 <ul className="list-none ">
-                  <li
-                    onMouseEnter={() => setHoveredIndex(0)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                    className="mb-4 font-SFT text-[#454F5B] hover:text-[#161C24] border-b border-transparent hover:border-b-[#4295E4] transition-colors duration-200"
-                  >
-                    <a href="#">Накладные электронные замки</a>
-                  </li>
-                  <li
-                    onMouseEnter={() => setHoveredIndex(1)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                    className="mb-4 font-SFT text-[#454F5B] hover:text-[#161C24] border-b border-transparent hover:border-b-[#4295E4] transition-colors duration-200"
-                  >
-                    <a href="#">Врезные электронные замки</a>
-                  </li>
-                  <li
-                    onMouseEnter={() => setHoveredIndex(2)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                    className="mb-4 font-SFT text-[#454F5B] hover:text-[#161C24] border-b border-transparent hover:border-b-[#4295E4] transition-colors duration-200"
-                  >
-                    <a href="#">Замки для квартиры</a>
-                  </li>
-                  <li
-                    onMouseEnter={() => setHoveredIndex(3)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                    className="mb-4 font-SFT text-[#454F5B] hover:text-[#161C24] border-b border-transparent hover:border-b-[#4295E4] transition-colors duration-200"
-                  >
-                    <a href="#">Замки для дома</a>
-                  </li>
-                  <li
-                    onMouseEnter={() => setHoveredIndex(4)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                    className="mb-4 font-SFT text-[#454F5B] hover:text-[#161C24] border-b border-transparent hover:border-b-[#4295E4] transition-colors duration-200"
-                  >
-                    <a href="#">Замки для отелей</a>
-                  </li>
-                  <li
-                    onMouseEnter={() => setHoveredIndex(5)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                    className="mb-4 font-SFT text-[#454F5B] hover:text-[#161C24] border-b border-transparent hover:border-b-[#4295E4] transition-colors duration-200"
-                  >
-                    <a href="#">Замки для офиса</a>
-                  </li>
-                  <li
-                    onMouseEnter={() => setHoveredIndex(6)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                    className="mb-4 font-SFT text-[#454F5B] hover:text-[#161C24] border-b border-transparent hover:border-b-[#4295E4] transition-colors duration-200"
-                  >
-                    <a href="#">Замки для шкафчиков</a>
-                  </li>
-                  <li
-                    onMouseEnter={() => setHoveredIndex(7)}
-                    onMouseLeave={() => setHoveredIndex(null)}
-                    className="mb-4 font-SFT text-[#454F5B] hover:text-[#161C24] border-b border-transparent hover:border-b-[#4295E4] transition-colors duration-200"
-                  >
-                    <a href="#">Замки для раздевалок</a>
-                  </li>
+                  {lockItems.map((item, idx) => (
+                    <li
+                      key={item.label}
+                      onMouseEnter={() => handleMouseEnter(idx)}
+                      onMouseLeave={handleMouseLeave}
+                      className="mb-4 font-SFT text-[#454F5B] hover:text-[#161C24] border-b border-transparent hover:border-b-[#4295E4] transition-colors duration-200"
+                    >
+                      <a href="#">{item.label}</a>
+                    </li>
+                  ))}
                   <Button>Смотреть всё</Button>
                 </ul>
               </div>
               <div className="w-[351px] relative h-[300px]">
                 <img
-                  src={lockItems[0].img}
-                  alt={lockItems[0].label}
-                  className={"absolute top-0 left-0 w-full h-auto transition-opacity duration-300 " + (hoveredIndex === null ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none")}
+                  src={lockItems[activeIndex].img}
+                  alt={lockItems[activeIndex].label}
+                  className="absolute top-0 left-0 w-full h-full object-contain transition-opacity duration-300 opacity-100 z-10"
                 />
-                {lockItems.map((item, idx) => (
-                  <img
-                    key={item.label}
-                    src={item.img}
-                    alt={item.label}
-                    className={"absolute top-0 left-0 w-full h-full transition-opacity duration-300 " + (hoveredIndex === idx ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none")}
-                  />
-                ))}
               </div>
             </div>
           </li>
@@ -199,7 +154,7 @@ export default function PagesList() {
               </ul>
               <div className="mt-8 flex items-start justify-between w-full">
                 <HeaderActions type="phone" />
-                <a href="#" className="text-blue-400 font-SFD underline font-semibold">
+                <a href="#" className="text-blue-400 font-SFD underline font-semibold max-smT:text-[13px]">
                   Обратный звонок
                 </a>
               </div>
@@ -210,10 +165,10 @@ export default function PagesList() {
           <div className={`fixed top-[44px] left-0 w-screen h-screen z-50 bg-white transition-transform duration-500 ease-in-out ${currentSlide === 1 ? "translate-x-0" : "translate-x-full"}`}>
             {/* Header для второго слайда - на месте бургера */}
             <div className="bg-white border-b border-[#EAEAEA] px-4 py-3 flex items-center justify-between">
-              <button onClick={handleBackClick} className="w-6 h-6 flex items-center justify-center">
-                <span className="inline-block w-3 h-3 border-l-2 border-b-2 border-black rotate-[45deg]"></span>
+              <button onClick={handleBackClick} className="relative h-10 flex items-center justify-center">
+                <span className="absolute left-0 top-1/2 -translate-y-1/2 inline-block w-3 h-3 border-l-2 border-b-2 border-black rotate-[45deg]"></span>
               </button>
-              <h2 className="font-SFT text-lg font-medium">Каталог</h2>
+              <h2 className="font-SFT text-lg font-medium text-black">Каталог</h2>
               <div className="w-6"></div>
             </div>
 
@@ -223,7 +178,7 @@ export default function PagesList() {
                 {Array.from({ length: Math.ceil(lockItems.length / 2) }, (_, rowIndex) => (
                   <div key={rowIndex} className="flex justify-center mt-6">
                     {lockItems.slice(rowIndex * 2, rowIndex * 2 + 2).map((item, index) => (
-                      <div key={index} className="text-left min-w-[131px] max-w-[300px] mr-[20px]">
+                      <div key={index} className={`text-left min-w-[121px] max-w-[300px]${index === 0 ? " mr-[20px]" : ""}`}>
                         <img src={item.img} alt={item.label} className="w-[100%] object-cover mb-3" />
                         <h3 className="font-SFT text-black font-medium leading-tight">{item.label}</h3>
                       </div>
